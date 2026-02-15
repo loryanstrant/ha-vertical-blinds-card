@@ -13,6 +13,8 @@ A custom Lovelace card for Home Assistant that displays vertical blinds with a v
 - 🌈 Customizable slat color
 - 👆 Configurable tap, hold, and double-tap actions
 - 📊 Shows position from 0% (closed) to 100% (open)
+- 👁️ Show/hide options for name and state
+- 🌙 Theme-aware background (adapts to light/dark themes)
 - ✏️ Visual editor with no YAML required
 - 📱 Responsive design
 
@@ -62,6 +64,8 @@ You can also configure the card via YAML:
 type: custom:vertical-blinds-card
 entity: cover.living_room_blinds
 name: Living Room Blinds
+show_name: true
+show_state: true
 slat_count: 8
 slat_color: '#FFFFFF'
 tap_action:
@@ -79,6 +83,8 @@ double_tap_action:
 | `type` | string | **Required** | Must be `custom:vertical-blinds-card` |
 | `entity` | string | **Required** | Entity ID of your cover |
 | `name` | string | Entity's friendly name | Custom name for the card |
+| `show_name` | boolean | `true` | Show or hide the entity name |
+| `show_state` | boolean | `true` | Show or hide the state display |
 | `slat_count` | number | `8` | Number of vertical slats to display (3-20) |
 | `slat_color` | string | `#FFFFFF` | Color of the blinds (hex color) |
 | `tap_action` | object | `{action: 'toggle'}` | Action on tap |
@@ -110,6 +116,8 @@ entity: cover.bedroom_blinds
 type: custom:vertical-blinds-card
 entity: cover.living_room_blinds
 name: My Custom Blinds
+show_name: true
+show_state: true
 slat_count: 10
 slat_color: '#E8E8E8'
 tap_action:
@@ -118,6 +126,33 @@ hold_action:
   action: more-info
 double_tap_action:
   action: none
+```
+
+### Hide Name Only
+
+```yaml
+type: custom:vertical-blinds-card
+entity: cover.bedroom_blinds
+show_name: false
+show_state: true
+```
+
+### Hide State Only
+
+```yaml
+type: custom:vertical-blinds-card
+entity: cover.office_blinds
+show_name: true
+show_state: false
+```
+
+### Minimal Display (Hide Both)
+
+```yaml
+type: custom:vertical-blinds-card
+entity: cover.garage_door
+show_name: false
+show_state: false
 ```
 
 ### White Blinds
