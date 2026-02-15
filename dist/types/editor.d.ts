@@ -10,6 +10,7 @@ export declare class VerticalBlindsCardEditor extends LitElement implements Love
     private _entityChanged;
     private _valueChanged;
     private _colorChanged;
+    private _switchChanged;
     private _actionChanged;
     private _fireConfigChanged;
     static styles: import("lit").CSSResult;

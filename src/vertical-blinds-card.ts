@@ -14,6 +14,9 @@ console.info(
 export class VerticalBlindsCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() private _config!: VerticalBlindsCardConfig;
+  @state() private _holdTimer?: number;
+  @state() private _holdDetected = false;
+  @state() private _lastTap = 0;
 
   public static async getConfigElement() {
     return document.createElement('vertical-blinds-card-editor');
@@ -25,6 +28,8 @@ export class VerticalBlindsCard extends LitElement {
       entity: '',
       slat_count: 8,
       slat_color: '#FFFFFF',
+      show_name: true,
+      show_state: true,
       tap_action: { action: 'toggle' },
       hold_action: { action: 'more-info' },
       double_tap_action: { action: 'none' },
@@ -39,6 +44,8 @@ export class VerticalBlindsCard extends LitElement {
     this._config = {
       slat_count: 8,
       slat_color: '#FFFFFF',
+      show_name: true,
+      show_state: true,
       tap_action: { action: 'toggle' },
       hold_action: { action: 'more-info' },
       double_tap_action: { action: 'none' },
@@ -94,19 +101,27 @@ export class VerticalBlindsCard extends LitElement {
     const name = this._config.name || stateObj.attributes.friendly_name || entityId;
     const slatCount = this._config.slat_count || 8;
     const slatColor = this._config.slat_color || '#FFFFFF';
+    const showName = this._config.show_name !== false;
+    const showState = this._config.show_state !== false;
 
     return html`
       <ha-card
-        @action=${this._handleAction}
-        .actionHandler=${this._actionHandler}
+        @click=${this._handleTap}
+        @touchstart=${this._handleHoldStart}
+        @touchend=${this._handleHoldEnd}
+        @touchcancel=${this._handleHoldEnd}
+        @mousedown=${this._handleHoldStart}
+        @mouseup=${this._handleHoldEnd}
         tabindex="0"
         .label=${`Vertical Blinds: ${name}`}
       >
         <div class="card-content">
-          <div class="header">
-            <div class="name">${name}</div>
-            <div class="state">${this._getStateDisplay(stateObj, position)}</div>
-          </div>
+          ${showName || showState ? html`
+            <div class="header">
+              ${showName ? html`<div class="name">${name}</div>` : ''}
+              ${showState ? html`<div class="state">${this._getStateDisplay(stateObj, position)}</div>` : ''}
+            </div>
+          ` : ''}
           <div class="blinds-container">
             ${this._renderBlind(slatCount, slatColor, position)}
           </div>
@@ -162,30 +177,51 @@ export class VerticalBlindsCard extends LitElement {
     }
   }
 
-  private get _actionHandler() {
-    return {
-      handleAction: (actionConfig: ActionConfig) => {
-        if (!this._config.entity) return;
-        handleAction(this, this.hass, this._config as any, actionConfig.action);
-      },
-    };
+  private _handleHoldStart(ev: MouseEvent | TouchEvent): void {
+    this._holdDetected = false;
+    this._holdTimer = window.setTimeout(() => {
+      this._holdDetected = true;
+      this._executeAction(this._config.hold_action);
+    }, 500); // 500ms hold time
   }
 
-  private _handleAction(ev: CustomEvent): void {
-    const action = ev.detail.action;
-    let actionConfig: ActionConfig | undefined;
+  private _handleHoldEnd(ev: MouseEvent | TouchEvent): void {
+    if (this._holdTimer) {
+      clearTimeout(this._holdTimer);
+      this._holdTimer = undefined;
+    }
+  }
 
-    if (action === 'tap') {
-      actionConfig = this._config.tap_action;
-    } else if (action === 'hold') {
-      actionConfig = this._config.hold_action;
-    } else if (action === 'double_tap') {
-      actionConfig = this._config.double_tap_action;
+  private _handleTap(ev: MouseEvent): void {
+    // If hold was detected, don't trigger tap
+    if (this._holdDetected) {
+      this._holdDetected = false;
+      return;
     }
 
-    if (actionConfig && this._config.entity) {
-      handleAction(this, this.hass, this._config as any, actionConfig.action);
+    const now = Date.now();
+    const timeSinceLastTap = now - this._lastTap;
+
+    // Double tap detection (within 300ms)
+    if (timeSinceLastTap < 300) {
+      this._lastTap = 0;
+      this._executeAction(this._config.double_tap_action);
+    } else {
+      this._lastTap = now;
+      // Wait a bit to see if there's a second tap
+      setTimeout(() => {
+        if (this._lastTap === now) {
+          this._executeAction(this._config.tap_action);
+        }
+      }, 300);
     }
+  }
+
+  private _executeAction(actionConfig: ActionConfig | undefined): void {
+    if (!actionConfig || !this._config.entity) {
+      return;
+    }
+    handleAction(this, this.hass, this._config as any, actionConfig.action);
   }
 
   static styles = css`
@@ -227,7 +263,7 @@ export class VerticalBlindsCard extends LitElement {
       justify-content: center;
       align-items: center;
       min-height: 200px;
-      background: linear-gradient(to bottom, #f0f0f0 0%, #e0e0e0 100%);
+      background: var(--card-background-color, var(--ha-card-background, var(--primary-background-color)));
       border-radius: 8px;
       overflow: hidden;
       position: relative;

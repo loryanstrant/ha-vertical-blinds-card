@@ -5,6 +5,9 @@ import './editor';
 export declare class VerticalBlindsCard extends LitElement {
     hass: HomeAssistant;
     private _config;
+    private _holdTimer?;
+    private _holdDetected;
+    private _lastTap;
     static getConfigElement(): Promise<import("./editor").VerticalBlindsCardEditor>;
     static getStubConfig(): VerticalBlindsCardConfig;
     setConfig(config: VerticalBlindsCardConfig): void;
@@ -14,8 +17,10 @@ export declare class VerticalBlindsCard extends LitElement {
     private _renderBlind;
     private _getPosition;
     private _getStateDisplay;
-    private get _actionHandler();
-    private _handleAction;
+    private _handleHoldStart;
+    private _handleHoldEnd;
+    private _handleTap;
+    private _executeAction;
     static styles: import("lit").CSSResult;
 }
 declare global {
