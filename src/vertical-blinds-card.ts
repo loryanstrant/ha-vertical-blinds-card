@@ -135,7 +135,21 @@ export class VerticalBlindsCard extends LitElement {
 
   private _renderBlind(slatCount: number, slatColor: string, position: number) {
     const slats = [];
-    const openAmount = position / 100;
+    const openAmount = position / 100; // 0 = closed, 1 = fully open
+    
+    // Calculate slat width: closed = max (60px or flex), open = min (3px)
+    // For intermediate positions, scale proportionally
+    let slatStyle: string;
+    if (openAmount === 0) {
+      // Fully closed - use flex to fill available space
+      slatStyle = 'flex: 1; max-width: 60px;';
+    } else {
+      // Open or partially open - use fixed widths
+      const maxWidth = 60; // Max width when closed
+      const minWidth = 3;  // Min width when fully open
+      const width = Math.round(maxWidth - (openAmount * (maxWidth - minWidth)));
+      slatStyle = `width: ${width}px;`;
+    }
     
     for (let i = 0; i < slatCount; i++) {
       slats.push(html`
@@ -143,8 +157,8 @@ export class VerticalBlindsCard extends LitElement {
           class="slat"
           style="
             background-color: ${slatColor};
-            transform: translateX(${openAmount * -100}%);
-            transition: transform 0.3s ease-in-out;
+            ${slatStyle}
+            transition: all 0.3s ease-in-out;
           "
         ></div>
       `);
@@ -284,13 +298,13 @@ export class VerticalBlindsCard extends LitElement {
     }
 
     .slat {
-      flex: 1;
+      flex: 0 0 auto;
       margin: 0 2px;
       border-radius: 2px;
       box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
       border: 1px solid rgba(0, 0, 0, 0.1);
-      min-width: 20px;
-      max-width: 60px;
+      min-width: 3px;
+      height: 100%;
     }
 
     .warning {

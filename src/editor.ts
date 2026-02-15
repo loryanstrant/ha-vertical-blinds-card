@@ -73,58 +73,8 @@ export class VerticalBlindsCardEditor extends LitElement implements LovelaceCard
             @change=${this._colorChanged}
           />
         </div>
-
-        <div class="action-config">
-          <label>Tap Action</label>
-          <paper-dropdown-menu>
-            <paper-listbox
-              slot="dropdown-content"
-              .selected=${this._getActionIndex(this._config.tap_action?.action || 'toggle')}
-              @iron-select=${(ev: CustomEvent) => this._actionChanged(ev, 'tap_action')}
-            >
-              <paper-item>Toggle</paper-item>
-              <paper-item>More Info</paper-item>
-              <paper-item>None</paper-item>
-            </paper-listbox>
-          </paper-dropdown-menu>
-        </div>
-
-        <div class="action-config">
-          <label>Hold Action</label>
-          <paper-dropdown-menu>
-            <paper-listbox
-              slot="dropdown-content"
-              .selected=${this._getActionIndex(this._config.hold_action?.action || 'more-info')}
-              @iron-select=${(ev: CustomEvent) => this._actionChanged(ev, 'hold_action')}
-            >
-              <paper-item>Toggle</paper-item>
-              <paper-item>More Info</paper-item>
-              <paper-item>None</paper-item>
-            </paper-listbox>
-          </paper-dropdown-menu>
-        </div>
-
-        <div class="action-config">
-          <label>Double Tap Action</label>
-          <paper-dropdown-menu>
-            <paper-listbox
-              slot="dropdown-content"
-              .selected=${this._getActionIndex(this._config.double_tap_action?.action || 'none')}
-              @iron-select=${(ev: CustomEvent) => this._actionChanged(ev, 'double_tap_action')}
-            >
-              <paper-item>Toggle</paper-item>
-              <paper-item>More Info</paper-item>
-              <paper-item>None</paper-item>
-            </paper-listbox>
-          </paper-dropdown-menu>
-        </div>
       </div>
     `;
-  }
-
-  private _getActionIndex(action: string): number {
-    const actions = ['toggle', 'more-info', 'none'];
-    return actions.indexOf(action);
   }
 
   private _entityChanged(ev: CustomEvent): void {
@@ -174,21 +124,6 @@ export class VerticalBlindsCardEditor extends LitElement implements LovelaceCard
     this._fireConfigChanged();
   }
 
-  private _actionChanged(ev: CustomEvent, actionType: string): void {
-    if (!this._config || !this.hass) {
-      return;
-    }
-    const actions = ['toggle', 'more-info', 'none'];
-    const selected = (ev.target as any).selected;
-    const action = actions[selected];
-    
-    this._config = {
-      ...this._config,
-      [actionType]: { action: action },
-    };
-    this._fireConfigChanged();
-  }
-
   private _fireConfigChanged(): void {
     const event = new CustomEvent('config-changed', {
       detail: { config: this._config },
@@ -234,20 +169,6 @@ export class VerticalBlindsCardEditor extends LitElement implements LovelaceCard
       border: 1px solid var(--divider-color);
       border-radius: 4px;
       cursor: pointer;
-    }
-
-    .action-config {
-      margin-bottom: 16px;
-    }
-
-    .action-config label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-
-    paper-dropdown-menu {
-      width: 100%;
     }
   `;
 }
