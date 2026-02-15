@@ -17,3 +17,15 @@ export interface ActionConfig {
   service_data?: any;
   confirmation?: any;
 }
+
+export interface CoverEntityState {
+  entity_id: string;
+  state: string;
+  attributes: {
+    friendly_name?: string;
+    current_position?: number;
+    [key: string]: any;
+  };
+  last_changed?: string;
+  last_updated?: string;
+}

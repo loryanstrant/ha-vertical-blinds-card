@@ -1,7 +1,7 @@
 import { LitElement, html, css, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { HomeAssistant, handleAction, LovelaceCardConfig } from 'custom-card-helpers';
-import { VerticalBlindsCardConfig, ActionConfig } from './types';
+import { VerticalBlindsCardConfig, ActionConfig, CoverEntityState } from './types';
 import './editor';
 
 console.info(
@@ -139,7 +139,7 @@ export class VerticalBlindsCard extends LitElement {
     `;
   }
 
-  private _getPosition(stateObj: any): number {
+  private _getPosition(stateObj: CoverEntityState): number {
     if (stateObj.attributes.current_position !== undefined) {
       return stateObj.attributes.current_position;
     }
@@ -152,7 +152,7 @@ export class VerticalBlindsCard extends LitElement {
     return 50;
   }
 
-  private _getStateDisplay(stateObj: any, position: number): string {
+  private _getStateDisplay(stateObj: CoverEntityState, position: number): string {
     if (position === 0) {
       return 'Closed';
     } else if (position === 100) {

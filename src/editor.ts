@@ -18,7 +18,7 @@ export class VerticalBlindsCardEditor extends LitElement implements LovelaceCard
     }
 
     const entities = Object.keys(this.hass.states).filter(
-      (eid) => eid.substr(0, eid.indexOf('.')) === 'cover'
+      (eid) => eid.startsWith('cover.')
     );
 
     return html`
