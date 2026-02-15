@@ -18,6 +18,9 @@ A custom Lovelace card for Home Assistant that displays vertical blinds with a v
 - ✏️ Visual editor with no YAML required
 - 📱 Responsive design
 
+<img width="537" height="298" alt="image" src="https://github.com/user-attachments/assets/4a685c30-3fec-47d9-b469-26033a34f4d3" />
+
+
 ## Installation
 
 ### HACS (Recommended)
