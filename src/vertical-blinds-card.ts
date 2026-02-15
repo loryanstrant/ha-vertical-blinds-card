@@ -135,7 +135,7 @@ export class VerticalBlindsCard extends LitElement {
 
   private _renderBlind(slatCount: number, slatColor: string, position: number) {
     const slats = [];
-    const openAmount = position / 100;
+    const openAmount = position / 100; // 0 = closed, 1 = fully open
     
     for (let i = 0; i < slatCount; i++) {
       slats.push(html`
@@ -143,8 +143,8 @@ export class VerticalBlindsCard extends LitElement {
           class="slat"
           style="
             background-color: ${slatColor};
-            transform: translateX(${openAmount * -100}%);
-            transition: transform 0.3s ease-in-out;
+            width: ${openAmount === 0 ? '100%' : `${Math.max(100 - (openAmount * 95), 5)}%`};
+            transition: width 0.3s ease-in-out;
           "
         ></div>
       `);
@@ -284,13 +284,13 @@ export class VerticalBlindsCard extends LitElement {
     }
 
     .slat {
-      flex: 1;
+      flex: 0 0 auto;
       margin: 0 2px;
       border-radius: 2px;
       box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
       border: 1px solid rgba(0, 0, 0, 0.1);
-      min-width: 20px;
-      max-width: 60px;
+      min-width: 3px;
+      height: 100%;
     }
 
     .warning {

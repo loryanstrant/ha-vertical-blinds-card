@@ -6,12 +6,10 @@ export declare class VerticalBlindsCardEditor extends LitElement implements Love
     private _config;
     setConfig(config: VerticalBlindsCardConfig): void;
     protected render(): import("lit-html").TemplateResult<1>;
-    private _getActionIndex;
     private _entityChanged;
     private _valueChanged;
     private _colorChanged;
     private _switchChanged;
-    private _actionChanged;
     private _fireConfigChanged;
     static styles: import("lit").CSSResult;
 }
