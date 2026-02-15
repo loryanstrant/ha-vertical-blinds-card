@@ -39,6 +39,22 @@ export class VerticalBlindsCardEditor extends LitElement implements LovelaceCard
           @value-changed=${this._valueChanged}
         ></paper-input>
 
+        <ha-formfield .label=${'Show Name'}>
+          <ha-switch
+            .checked=${this._config.show_name !== false}
+            .configValue=${'show_name'}
+            @change=${this._switchChanged}
+          ></ha-switch>
+        </ha-formfield>
+
+        <ha-formfield .label=${'Show State'}>
+          <ha-switch
+            .checked=${this._config.show_state !== false}
+            .configValue=${'show_state'}
+            @change=${this._switchChanged}
+          ></ha-switch>
+        </ha-formfield>
+
         <paper-input
           label="Number of Slats"
           type="number"
@@ -146,6 +162,18 @@ export class VerticalBlindsCardEditor extends LitElement implements LovelaceCard
     this._fireConfigChanged();
   }
 
+  private _switchChanged(ev: Event): void {
+    if (!this._config || !this.hass) {
+      return;
+    }
+    const target = ev.target as any;
+    const configValue = target.configValue;
+    const checked = target.checked;
+    
+    this._config = { ...this._config, [configValue]: checked };
+    this._fireConfigChanged();
+  }
+
   private _actionChanged(ev: CustomEvent, actionType: string): void {
     if (!this._config || !this.hass) {
       return;
@@ -182,6 +210,11 @@ export class VerticalBlindsCardEditor extends LitElement implements LovelaceCard
 
     ha-entity-picker {
       width: 100%;
+      margin-bottom: 16px;
+    }
+
+    ha-formfield {
+      display: block;
       margin-bottom: 16px;
     }
 

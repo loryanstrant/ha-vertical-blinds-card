@@ -2,6 +2,8 @@ export interface VerticalBlindsCardConfig {
   type: string;
   entity?: string;
   name?: string;
+  show_name?: boolean;
+  show_state?: boolean;
   slat_count?: number;
   slat_color?: string;
   tap_action?: ActionConfig;
