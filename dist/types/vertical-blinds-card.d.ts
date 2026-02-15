@@ -8,6 +8,8 @@ export declare class VerticalBlindsCard extends LitElement {
     private _holdTimer?;
     private _holdDetected;
     private _lastTap;
+    private static readonly HOLD_DELAY_MS;
+    private static readonly DOUBLE_TAP_DELAY_MS;
     static getConfigElement(): Promise<import("./editor").VerticalBlindsCardEditor>;
     static getStubConfig(): VerticalBlindsCardConfig;
     setConfig(config: VerticalBlindsCardConfig): void;

@@ -14,9 +14,12 @@ console.info(
 export class VerticalBlindsCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() private _config!: VerticalBlindsCardConfig;
-  @state() private _holdTimer?: number;
+  @state() private _holdTimer?: ReturnType<typeof setTimeout>;
   @state() private _holdDetected = false;
   @state() private _lastTap = 0;
+
+  private static readonly HOLD_DELAY_MS = 500;
+  private static readonly DOUBLE_TAP_DELAY_MS = 300;
 
   public static async getConfigElement() {
     return document.createElement('vertical-blinds-card-editor');
@@ -182,7 +185,7 @@ export class VerticalBlindsCard extends LitElement {
     this._holdTimer = window.setTimeout(() => {
       this._holdDetected = true;
       this._executeAction(this._config.hold_action);
-    }, 500); // 500ms hold time
+    }, VerticalBlindsCard.HOLD_DELAY_MS);
   }
 
   private _handleHoldEnd(ev: MouseEvent | TouchEvent): void {
@@ -192,7 +195,7 @@ export class VerticalBlindsCard extends LitElement {
     }
   }
 
-  private _handleTap(ev: MouseEvent): void {
+  private _handleTap(ev: MouseEvent | TouchEvent): void {
     // If hold was detected, don't trigger tap
     if (this._holdDetected) {
       this._holdDetected = false;
@@ -202,8 +205,8 @@ export class VerticalBlindsCard extends LitElement {
     const now = Date.now();
     const timeSinceLastTap = now - this._lastTap;
 
-    // Double tap detection (within 300ms)
-    if (timeSinceLastTap < 300) {
+    // Double tap detection
+    if (timeSinceLastTap < VerticalBlindsCard.DOUBLE_TAP_DELAY_MS) {
       this._lastTap = 0;
       this._executeAction(this._config.double_tap_action);
     } else {
@@ -213,7 +216,7 @@ export class VerticalBlindsCard extends LitElement {
         if (this._lastTap === now) {
           this._executeAction(this._config.tap_action);
         }
-      }, 300);
+      }, VerticalBlindsCard.DOUBLE_TAP_DELAY_MS);
     }
   }
 
