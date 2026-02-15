@@ -137,14 +137,28 @@ export class VerticalBlindsCard extends LitElement {
     const slats = [];
     const openAmount = position / 100; // 0 = closed, 1 = fully open
     
+    // Calculate slat width: closed = max (60px or flex), open = min (3px)
+    // For intermediate positions, scale proportionally
+    let slatStyle: string;
+    if (openAmount === 0) {
+      // Fully closed - use flex to fill available space
+      slatStyle = 'flex: 1; max-width: 60px;';
+    } else {
+      // Open or partially open - use fixed widths
+      const maxWidth = 60; // Max width when closed
+      const minWidth = 3;  // Min width when fully open
+      const width = Math.round(maxWidth - (openAmount * (maxWidth - minWidth)));
+      slatStyle = `width: ${width}px;`;
+    }
+    
     for (let i = 0; i < slatCount; i++) {
       slats.push(html`
         <div
           class="slat"
           style="
             background-color: ${slatColor};
-            width: ${openAmount === 0 ? '100%' : `${Math.max(100 - (openAmount * 95), 5)}%`};
-            transition: width 0.3s ease-in-out;
+            ${slatStyle}
+            transition: all 0.3s ease-in-out;
           "
         ></div>
       `);

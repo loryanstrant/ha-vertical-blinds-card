@@ -157,13 +157,13 @@ const ht=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
           </div>
         </div>
       </ha-card>
-    `}_renderBlind(t,e,i){const s=[],o=i/100;for(let i=0;i<t;i++)s.push(I`
+    `}_renderBlind(t,e,i){const s=[],o=i/100;let n;if(0===o)n="flex: 1; max-width: 60px;";else{const t=60,e=3;n=`width: ${Math.round(t-o*(t-e))}px;`}for(let i=0;i<t;i++)s.push(I`
         <div
           class="slat"
           style="
             background-color: ${e};
-            width: ${0===o?"100%":`${Math.max(100-95*o,5)}%`};
-            transition: width 0.3s ease-in-out;
+            ${n}
+            transition: all 0.3s ease-in-out;
           "
         ></div>
       `);return I`
