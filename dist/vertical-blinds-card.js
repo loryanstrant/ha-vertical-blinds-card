@@ -126,25 +126,15 @@ const ht=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       border-radius: 4px;
       cursor: pointer;
     }
-  `,t([pt({attribute:!1})],vt.prototype,"hass",void 0),t([ut()],vt.prototype,"_config",void 0),vt=t([ht("vertical-blinds-card-editor")],vt),console.info("%c VERTICAL-BLINDS-CARD %c 1.0.0 ","color: white; background: #4CAF50; font-weight: 700;","color: #4CAF50; background: white; font-weight: 700;");let bt=yt=class extends at{constructor(){super(...arguments),this._holdDetected=!1,this._lastTap=0}static async getConfigElement(){return document.createElement("vertical-blinds-card-editor")}static getStubConfig(){return{type:"custom:vertical-blinds-card",entity:"",slat_count:8,slat_color:"#FFFFFF",show_name:!0,show_state:!0,tap_action:{action:"toggle"},hold_action:{action:"more-info"},double_tap_action:{action:"none"}}}setConfig(t){if(!t)throw new Error("Invalid configuration");this._config={slat_count:8,slat_color:"#FFFFFF",show_name:!0,show_state:!0,tap_action:{action:"toggle"},hold_action:{action:"more-info"},double_tap_action:{action:"none"},...t}}getCardSize(){return 3}shouldUpdate(t){if(t.has("_config"))return!0;const e=t.get("hass");return!e||!this._config||!(!this._config.entity||e.states[this._config.entity]===this.hass.states[this._config.entity])}render(){if(!this._config||!this.hass)return I``;const t=this._config.entity,e=this._config.slat_count||8,i=this._config.slat_color||"#FFFFFF",s=!1!==this._config.show_name,o=!1!==this._config.show_state;if(!t)return I`
+  `,t([pt({attribute:!1})],vt.prototype,"hass",void 0),t([ut()],vt.prototype,"_config",void 0),vt=t([ht("vertical-blinds-card-editor")],vt),console.info("%c VERTICAL-BLINDS-CARD %c 1.0.0 ","color: white; background: #4CAF50; font-weight: 700;","color: #4CAF50; background: white; font-weight: 700;");let bt=yt=class extends at{constructor(){super(...arguments),this._holdDetected=!1,this._lastTap=0}static async getConfigElement(){return document.createElement("vertical-blinds-card-editor")}static getStubConfig(){return{type:"custom:vertical-blinds-card",entity:"",slat_count:8,slat_color:"#FFFFFF",show_name:!0,show_state:!0,tap_action:{action:"toggle"},hold_action:{action:"more-info"},double_tap_action:{action:"none"}}}setConfig(t){if(!t)throw new Error("Invalid configuration");this._config={slat_count:8,slat_color:"#FFFFFF",show_name:!0,show_state:!0,tap_action:{action:"toggle"},hold_action:{action:"more-info"},double_tap_action:{action:"none"},...t}}getCardSize(){return 3}shouldUpdate(t){if(t.has("_config"))return!0;const e=t.get("hass");return!e||!this._config||!(!this._config.entity||e.states[this._config.entity]===this.hass.states[this._config.entity])}render(){if(!this._config||!this.hass)return I``;const t=this._config.entity;if(!t)return I`
         <ha-card>
-          <div class="card-content">
-            ${s||o?I`
-              <div class="header">
-                ${s?I`<div class="name">Vertical Blinds</div>`:""}
-                ${o?I`<div class="state">Preview</div>`:""}
-              </div>
-            `:""}
-            <div class="blinds-container">
-              ${this._renderBlind(e,i,50)}
-            </div>
-          </div>
+          <div class="warning">No entity configured</div>
         </ha-card>
-      `;const n=this.hass.states[t];if(!n)return I`
+      `;const e=this.hass.states[t];if(!e)return I`
         <ha-card>
           <div class="warning">Entity not found: ${t}</div>
         </ha-card>
-      `;const r=this._getPosition(n),a=this._config.name||n.attributes.friendly_name||t;return I`
+      `;const i=this._getPosition(e),s=this._config.name||e.attributes.friendly_name||t,o=this._config.slat_count||8,n=this._config.slat_color||"#FFFFFF",r=!1!==this._config.show_name,a=!1!==this._config.show_state;return I`
       <ha-card
         @click=${this._handleTap}
         @touchstart=${this._handleHoldStart}
@@ -153,17 +143,17 @@ const ht=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
         @mousedown=${this._handleHoldStart}
         @mouseup=${this._handleHoldEnd}
         tabindex="0"
-        .label=${`Vertical Blinds: ${a}`}
+        .label=${`Vertical Blinds: ${s}`}
       >
         <div class="card-content">
-          ${s||o?I`
+          ${r||a?I`
             <div class="header">
-              ${s?I`<div class="name">${a}</div>`:""}
-              ${o?I`<div class="state">${this._getStateDisplay(n,r)}</div>`:""}
+              ${r?I`<div class="name">${s}</div>`:""}
+              ${a?I`<div class="state">${this._getStateDisplay(e,i)}</div>`:""}
             </div>
           `:""}
           <div class="blinds-container">
-            ${this._renderBlind(e,i,r)}
+            ${this._renderBlind(o,n,i)}
           </div>
         </div>
       </ha-card>
@@ -180,7 +170,7 @@ const ht=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       <div class="blind">
         ${s}
       </div>
-    `}_getPosition(t){return void 0!==t.attributes.current_position?t.attributes.current_position:"open"===t.state?100:"closed"===t.state?0:50}_getStateDisplay(t,e){return 0===e?"Closed":100===e?"Open":`${e}% Open`}_handleHoldStart(t){this._holdDetected=!1,this._holdTimer=window.setTimeout(()=>{this._holdDetected=!0,this._executeAction(this._config.hold_action)},yt.HOLD_DELAY_MS)}_handleHoldEnd(t){this._holdTimer&&(clearTimeout(this._holdTimer),this._holdTimer=void 0)}_handleTap(t){if(t.stopPropagation(),t.preventDefault(),this._holdDetected)return void(this._holdDetected=!1);const e=Date.now(),i=e-this._lastTap,s="none"!==this._config.double_tap_action?.action;s&&i<yt.DOUBLE_TAP_DELAY_MS?(this._lastTap=0,this._executeAction(this._config.double_tap_action)):(this._lastTap=e,s?setTimeout(()=>{this._lastTap===e&&this._executeAction(this._config.tap_action)},yt.DOUBLE_TAP_DELAY_MS):this._executeAction(this._config.tap_action))}_executeAction(t){t&&this._config.entity&&function(t,e,i,s){var o;"double_tap"===s&&i.double_tap_action?o=i.double_tap_action:"hold"===s&&i.hold_action?o=i.hold_action:"tap"===s&&i.tap_action&&(o=i.tap_action),function(t,e,i,s){if(s||(s={action:"more-info"}),!s.confirmation||s.confirmation.exemptions&&s.confirmation.exemptions.some(function(t){return t.user===e.user.id})||(mt("warning"),confirm(s.confirmation.text||"Are you sure you want to "+s.action+"?")))switch(s.action){case"more-info":(i.entity||i.camera_image)&&$t(t,"hass-more-info",{entityId:i.entity?i.entity:i.camera_image});break;case"navigate":s.navigation_path&&function(t,e,i){void 0===i&&(i=!1),i?history.replaceState(null,"",e):history.pushState(null,"",e),$t(window,"location-changed",{replace:i})}(0,s.navigation_path);break;case"url":s.url_path&&window.open(s.url_path);break;case"toggle":i.entity&&(function(t,e){!function(t,e,i){void 0===i&&(i=!0);var s,o=function(t){return t.substr(0,t.indexOf("."))}(e),n="group"===o?"homeassistant":o;switch(o){case"lock":s=i?"unlock":"lock";break;case"cover":s=i?"open_cover":"close_cover";break;default:s=i?"turn_on":"turn_off"}t.callService(n,s,{entity_id:e})}(t,e,gt.includes(t.states[e].state))}(e,i.entity),mt("success"));break;case"call-service":if(!s.service)return void mt("failure");var o=s.service.split(".",2);e.callService(o[0],o[1],s.service_data,s.target),mt("success");break;case"fire-dom-event":$t(t,"ll-custom",s)}}(t,e,i,o)}(this,this.hass,this._config,t.action)}};bt.HOLD_DELAY_MS=500,bt.DOUBLE_TAP_DELAY_MS=300,bt.styles=r`
+    `}_getPosition(t){return void 0!==t.attributes.current_position?t.attributes.current_position:"open"===t.state?100:"closed"===t.state?0:50}_getStateDisplay(t,e){return 0===e?"Closed":100===e?"Open":`${e}% Open`}_handleHoldStart(t){this._holdDetected=!1,this._holdTimer=window.setTimeout(()=>{this._holdDetected=!0,this._executeAction(this._config.hold_action)},yt.HOLD_DELAY_MS)}_handleHoldEnd(t){this._holdTimer&&(clearTimeout(this._holdTimer),this._holdTimer=void 0)}_handleTap(t){if(this._holdDetected)return void(this._holdDetected=!1);const e=Date.now();e-this._lastTap<yt.DOUBLE_TAP_DELAY_MS?(this._lastTap=0,this._executeAction(this._config.double_tap_action)):(this._lastTap=e,setTimeout(()=>{this._lastTap===e&&this._executeAction(this._config.tap_action)},yt.DOUBLE_TAP_DELAY_MS))}_executeAction(t){t&&this._config.entity&&function(t,e,i,s){var o;"double_tap"===s&&i.double_tap_action?o=i.double_tap_action:"hold"===s&&i.hold_action?o=i.hold_action:"tap"===s&&i.tap_action&&(o=i.tap_action),function(t,e,i,s){if(s||(s={action:"more-info"}),!s.confirmation||s.confirmation.exemptions&&s.confirmation.exemptions.some(function(t){return t.user===e.user.id})||(mt("warning"),confirm(s.confirmation.text||"Are you sure you want to "+s.action+"?")))switch(s.action){case"more-info":(i.entity||i.camera_image)&&$t(t,"hass-more-info",{entityId:i.entity?i.entity:i.camera_image});break;case"navigate":s.navigation_path&&function(t,e,i){void 0===i&&(i=!1),i?history.replaceState(null,"",e):history.pushState(null,"",e),$t(window,"location-changed",{replace:i})}(0,s.navigation_path);break;case"url":s.url_path&&window.open(s.url_path);break;case"toggle":i.entity&&(function(t,e){!function(t,e,i){void 0===i&&(i=!0);var s,o=function(t){return t.substr(0,t.indexOf("."))}(e),n="group"===o?"homeassistant":o;switch(o){case"lock":s=i?"unlock":"lock";break;case"cover":s=i?"open_cover":"close_cover";break;default:s=i?"turn_on":"turn_off"}t.callService(n,s,{entity_id:e})}(t,e,gt.includes(t.states[e].state))}(e,i.entity),mt("success"));break;case"call-service":if(!s.service)return void mt("failure");var o=s.service.split(".",2);e.callService(o[0],o[1],s.service_data,s.target),mt("success");break;case"fire-dom-event":$t(t,"ll-custom",s)}}(t,e,i,o)}(this,this.hass,this._config,t.action)}};bt.HOLD_DELAY_MS=500,bt.DOUBLE_TAP_DELAY_MS=300,bt.styles=r`
     ha-card {
       height: 100%;
       display: flex;
