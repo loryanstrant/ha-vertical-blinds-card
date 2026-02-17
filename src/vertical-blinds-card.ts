@@ -83,10 +83,26 @@ export class VerticalBlindsCard extends LitElement {
     }
 
     const entityId = this._config.entity;
+    const slatCount = this._config.slat_count || 8;
+    const slatColor = this._config.slat_color || '#FFFFFF';
+    const showName = this._config.show_name !== false;
+    const showState = this._config.show_state !== false;
+
+    // Show preview/placeholder when no entity is configured
     if (!entityId) {
       return html`
         <ha-card>
-          <div class="warning">No entity configured</div>
+          <div class="card-content">
+            ${showName || showState ? html`
+              <div class="header">
+                ${showName ? html`<div class="name">Vertical Blinds</div>` : ''}
+                ${showState ? html`<div class="state">Preview</div>` : ''}
+              </div>
+            ` : ''}
+            <div class="blinds-container">
+              ${this._renderBlind(slatCount, slatColor, 50)}
+            </div>
+          </div>
         </ha-card>
       `;
     }
@@ -102,10 +118,6 @@ export class VerticalBlindsCard extends LitElement {
 
     const position = this._getPosition(stateObj);
     const name = this._config.name || stateObj.attributes.friendly_name || entityId;
-    const slatCount = this._config.slat_count || 8;
-    const slatColor = this._config.slat_color || '#FFFFFF';
-    const showName = this._config.show_name !== false;
-    const showState = this._config.show_state !== false;
 
     return html`
       <ha-card
@@ -210,6 +222,10 @@ export class VerticalBlindsCard extends LitElement {
   }
 
   private _handleTap(ev: MouseEvent | TouchEvent): void {
+    // Prevent default Home Assistant behavior (more-info dialog)
+    ev.stopPropagation();
+    ev.preventDefault();
+
     // If hold was detected, don't trigger tap
     if (this._holdDetected) {
       this._holdDetected = false;
@@ -219,18 +235,26 @@ export class VerticalBlindsCard extends LitElement {
     const now = Date.now();
     const timeSinceLastTap = now - this._lastTap;
 
+    // Check if double tap action is configured (not 'none')
+    const hasDoubleTap = this._config.double_tap_action?.action !== 'none';
+
     // Double tap detection
-    if (timeSinceLastTap < VerticalBlindsCard.DOUBLE_TAP_DELAY_MS) {
+    if (hasDoubleTap && timeSinceLastTap < VerticalBlindsCard.DOUBLE_TAP_DELAY_MS) {
       this._lastTap = 0;
       this._executeAction(this._config.double_tap_action);
     } else {
       this._lastTap = now;
-      // Wait a bit to see if there's a second tap
-      setTimeout(() => {
-        if (this._lastTap === now) {
-          this._executeAction(this._config.tap_action);
-        }
-      }, VerticalBlindsCard.DOUBLE_TAP_DELAY_MS);
+      // If no double tap configured, execute immediately for better responsiveness
+      if (!hasDoubleTap) {
+        this._executeAction(this._config.tap_action);
+      } else {
+        // Wait a bit to see if there's a second tap
+        setTimeout(() => {
+          if (this._lastTap === now) {
+            this._executeAction(this._config.tap_action);
+          }
+        }, VerticalBlindsCard.DOUBLE_TAP_DELAY_MS);
+      }
     }
   }
 
