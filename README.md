@@ -2,24 +2,24 @@
 
 A custom Lovelace card for Home Assistant that displays vertical blinds with a visual representation of their open/closed state.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 ## Features
 
 - 🎨 Visual representation of vertical blinds
+- 👁️ Preview mode in card selector (shows sample blinds when no entity configured)
 - 🎯 Entity picker for easy configuration
-- 🔢 Adjustable number of slats (3-20)
+- 🔢 Adjustable number of slats (3-20) - configurable in visual editor
 - 🌈 Customizable slat color
 - 👆 Configurable tap, hold, and double-tap actions
 - 📊 Shows position from 0% (closed) to 100% (open)
 - 👁️ Show/hide options for name and state
 - 🌙 Theme-aware background (adapts to light/dark themes)
-- ✏️ Visual editor with no YAML required
+- ✏️ Modern visual editor with ha-textfield components (no YAML required)
 - 📱 Responsive design
 
 <img width="537" height="298" alt="image" src="https://github.com/user-attachments/assets/4a685c30-3fec-47d9-b469-26033a34f4d3" />
-
 
 ## Installation
 
@@ -58,6 +58,11 @@ This card includes a full visual editor! Simply:
 3. Click "+ Add Card"
 4. Search for "Vertical Blinds Card"
 5. Configure using the visual editor
+
+The visual editor includes:
+- **Name** field for custom card title
+- **Number of Slats** field (3-20 range)
+- All standard configuration options
 
 ### YAML Configuration
 
@@ -100,9 +105,11 @@ Each action (`tap_action`, `hold_action`, `double_tap_action`) supports:
 
 | Action | Description |
 |--------|-------------|
-| `toggle` | Toggle the cover entity |
+| `toggle` | Toggle the cover entity (default for tap) |
 | `more-info` | Open the more-info dialog |
 | `none` | Do nothing |
+
+**Note**: The tap action is properly implemented to toggle the cover directly without showing the more-info dialog first. Event propagation is stopped to prevent default Home Assistant behavior.
 
 ## Examples
 
@@ -188,6 +195,10 @@ If your cover doesn't have a `current_position` attribute, the card will use the
 - `open` = 100%
 - Otherwise = 50%
 
+### Preview Mode
+
+When adding the card in the card selector (before configuring an entity), the card displays a preview showing "Vertical Blinds" as the name and "Preview" as the state, with sample blinds at 50% open position. This provides a visual preview of how the card will look.
+
 ## Development
 
 ### Prerequisites
@@ -211,6 +222,15 @@ For development with automatic rebuilding:
 ```bash
 npm run watch
 ```
+
+## Recent Updates
+
+### v0.1.0 (February 2026)
+- ✅ Fixed preview placeholder in card selector
+- ✅ Fixed tap action to properly toggle cover without showing more-info dialog
+- ✅ Modernized visual editor with ha-textfield components
+- ✅ Number of Slats field now visible in visual editor
+- ✅ Improved action handler implementation for better responsiveness
 
 ## Contributing
 
