@@ -198,7 +198,7 @@ export class VerticalBlindsCard extends LitElement {
     this._holdDetected = false;
     this._holdTimer = window.setTimeout(() => {
       this._holdDetected = true;
-      this._executeAction(this._config.hold_action);
+      this._executeAction("hold");
     }, VerticalBlindsCard.HOLD_DELAY_MS);
   }
 
@@ -222,23 +222,23 @@ export class VerticalBlindsCard extends LitElement {
     // Double tap detection
     if (timeSinceLastTap < VerticalBlindsCard.DOUBLE_TAP_DELAY_MS) {
       this._lastTap = 0;
-      this._executeAction(this._config.double_tap_action);
+      this._executeAction("double_tap");
     } else {
       this._lastTap = now;
       // Wait a bit to see if there's a second tap
       setTimeout(() => {
         if (this._lastTap === now) {
-          this._executeAction(this._config.tap_action);
+          this._executeAction("tap");
         }
       }, VerticalBlindsCard.DOUBLE_TAP_DELAY_MS);
     }
   }
 
-  private _executeAction(actionConfig: ActionConfig | undefined): void {
-    if (!actionConfig || !this._config.entity) {
+  private _executeAction(actionType: string): void {
+    if (!this._config.entity) {
       return;
     }
-    handleAction(this, this.hass, this._config as any, actionConfig.action);
+    handleAction(this, this.hass, this._config as any, actionType);
   }
 
   static styles = css`

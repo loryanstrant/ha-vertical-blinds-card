@@ -32,12 +32,12 @@ export class VerticalBlindsCardEditor extends LitElement implements LovelaceCard
           allow-custom-entity
         ></ha-entity-picker>
 
-        <paper-input
+        <ha-textfield
           label="Name (Optional)"
           .value=${this._config.name || ''}
           .configValue=${'name'}
           @value-changed=${this._valueChanged}
-        ></paper-input>
+        ></ha-textfield>
 
         <ha-formfield .label=${'Show Name'}>
           <ha-switch
@@ -55,7 +55,7 @@ export class VerticalBlindsCardEditor extends LitElement implements LovelaceCard
           ></ha-switch>
         </ha-formfield>
 
-        <paper-input
+        <ha-textfield
           label="Number of Slats"
           type="number"
           min="3"
@@ -63,7 +63,7 @@ export class VerticalBlindsCardEditor extends LitElement implements LovelaceCard
           .value=${this._config.slat_count || 8}
           .configValue=${'slat_count'}
           @value-changed=${this._valueChanged}
-        ></paper-input>
+        ></ha-textfield>
 
         <div class="color-picker-wrapper">
           <label>Slat Color</label>
@@ -138,7 +138,7 @@ export class VerticalBlindsCardEditor extends LitElement implements LovelaceCard
       padding: 16px;
     }
 
-    paper-input {
+    ha-textfield {
       width: 100%;
       margin-bottom: 16px;
     }
