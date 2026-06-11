@@ -126,7 +126,7 @@ const ht=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       border-radius: 4px;
       cursor: pointer;
     }
-  `,t([pt({attribute:!1})],vt.prototype,"hass",void 0),t([ut()],vt.prototype,"_config",void 0),vt=t([ht("vertical-blinds-card-editor")],vt),console.info("%c VERTICAL-BLINDS-CARD %c 0.2.0 ","color: white; background: #4CAF50; font-weight: 700;","color: #4CAF50; background: white; font-weight: 700;");let bt=yt=class extends at{constructor(){super(...arguments),this._holdDetected=!1,this._lastTap=0}static async getConfigElement(){return document.createElement("vertical-blinds-card-editor")}static getStubConfig(){return{type:"custom:vertical-blinds-card",entity:"",slat_count:8,slat_color:"#FFFFFF",show_name:!0,show_state:!0,tap_action:{action:"toggle"},hold_action:{action:"more-info"},double_tap_action:{action:"none"}}}setConfig(t){if(!t)throw new Error("Invalid configuration");this._config={slat_count:8,slat_color:"#FFFFFF",show_name:!0,show_state:!0,tap_action:{action:"toggle"},hold_action:{action:"more-info"},double_tap_action:{action:"none"},...t}}getCardSize(){return 3}shouldUpdate(t){if(t.has("_config"))return!0;const e=t.get("hass");return!e||!this._config||!(!this._config.entity||e.states[this._config.entity]===this.hass.states[this._config.entity])}render(){if(!this._config||!this.hass)return I``;const t=this._config.entity;if(!t)return I`
+  `,t([pt({attribute:!1})],vt.prototype,"hass",void 0),t([ut()],vt.prototype,"_config",void 0),vt=t([ht("vertical-blinds-card-editor")],vt),console.info("%c VERTICAL-BLINDS-CARD %c 0.2.1 ","color: white; background: #4CAF50; font-weight: 700;","color: #4CAF50; background: white; font-weight: 700;");let bt=yt=class extends at{constructor(){super(...arguments),this._holdDetected=!1,this._lastTap=0}static async getConfigElement(){return document.createElement("vertical-blinds-card-editor")}static getStubConfig(){return{type:"custom:vertical-blinds-card",entity:"",slat_count:8,slat_color:"#FFFFFF",show_name:!0,show_state:!0,tap_action:{action:"toggle"},hold_action:{action:"more-info"},double_tap_action:{action:"none"}}}setConfig(t){if(!t)throw new Error("Invalid configuration");this._config={slat_count:8,slat_color:"#FFFFFF",show_name:!0,show_state:!0,tap_action:{action:"toggle"},hold_action:{action:"more-info"},double_tap_action:{action:"none"},...t}}getCardSize(){return 3}shouldUpdate(t){if(t.has("_config"))return!0;const e=t.get("hass");return!e||!this._config||!(!this._config.entity||e.states[this._config.entity]===this.hass.states[this._config.entity])}render(){if(!this._config||!this.hass)return I``;const t=this._config.entity;if(!t)return I`
         <ha-card>
           <div class="warning">No entity configured</div>
         </ha-card>
@@ -134,7 +134,7 @@ const ht=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
         <ha-card>
           <div class="warning">Entity not found: ${t}</div>
         </ha-card>
-      `;const i=this._getPosition(e),s=this._config.name||this.hass.formatEntityName?.(t)||e.attributes.friendly_name||t,o=this._config.slat_count||8,n=this._config.slat_color||"#FFFFFF",r=!1!==this._config.show_name,a=!1!==this._config.show_state;return I`
+      `;const i=this._getPosition(e);let s;try{s=this.hass.formatEntityName?.(e)}catch(t){s=void 0}const o=this._config.name||s||e.attributes.friendly_name||t,n=this._config.slat_count||8,r=this._config.slat_color||"#FFFFFF",a=!1!==this._config.show_name,c=!1!==this._config.show_state;return I`
       <ha-card
         @click=${this._handleTap}
         @touchstart=${this._handleHoldStart}
@@ -143,17 +143,17 @@ const ht=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
         @mousedown=${this._handleHoldStart}
         @mouseup=${this._handleHoldEnd}
         tabindex="0"
-        .label=${`Vertical Blinds: ${s}`}
+        .label=${`Vertical Blinds: ${o}`}
       >
         <div class="card-content">
-          ${r||a?I`
+          ${a||c?I`
             <div class="header">
-              ${r?I`<div class="name">${s}</div>`:""}
-              ${a?I`<div class="state">${this._getStateDisplay(e,i)}</div>`:""}
+              ${a?I`<div class="name">${o}</div>`:""}
+              ${c?I`<div class="state">${this._getStateDisplay(e,i)}</div>`:""}
             </div>
           `:""}
           <div class="blinds-container">
-            ${this._renderBlind(o,n,i)}
+            ${this._renderBlind(n,r,i)}
           </div>
         </div>
       </ha-card>

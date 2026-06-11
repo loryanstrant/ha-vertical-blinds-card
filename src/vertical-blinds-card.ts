@@ -5,7 +5,7 @@ import { VerticalBlindsCardConfig, ActionConfig, CoverEntityState } from './type
 import './editor';
 
 console.info(
-  `%c VERTICAL-BLINDS-CARD %c 0.2.0 `,
+  `%c VERTICAL-BLINDS-CARD %c 0.2.1 `,
   'color: white; background: #4CAF50; font-weight: 700;',
   'color: #4CAF50; background: white; font-weight: 700;'
 );
@@ -101,9 +101,18 @@ export class VerticalBlindsCard extends LitElement {
     }
 
     const position = this._getPosition(stateObj);
+    // hass.formatEntityName (2026.5+) takes the *state object*, not the entity
+    // id; passing a string makes it throw on `.attributes.friendly_name`.
+    // Guard it so an API change can never break the card.
+    let formattedName: string | undefined;
+    try {
+      formattedName = (this.hass as any).formatEntityName?.(stateObj);
+    } catch (_e) {
+      formattedName = undefined;
+    }
     const name =
       this._config.name ||
-      (this.hass as any).formatEntityName?.(entityId) ||
+      formattedName ||
       stateObj.attributes.friendly_name ||
       entityId;
     const slatCount = this._config.slat_count || 8;
