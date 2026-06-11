@@ -1,6 +1,6 @@
 {
   "name": "vertical-blinds-card",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "description": "A custom Home Assistant card for displaying vertical blinds",
   "main": "dist/vertical-blinds-card.js",
   "type": "module",

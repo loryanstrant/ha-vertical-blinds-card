@@ -5,7 +5,7 @@ import { VerticalBlindsCardConfig, ActionConfig, CoverEntityState } from './type
 import './editor';
 
 console.info(
-  `%c VERTICAL-BLINDS-CARD %c 1.0.0 `,
+  `%c VERTICAL-BLINDS-CARD %c 1.1.0 `,
   'color: white; background: #4CAF50; font-weight: 700;',
   'color: #4CAF50; background: white; font-weight: 700;'
 );
@@ -101,7 +101,11 @@ export class VerticalBlindsCard extends LitElement {
     }
 
     const position = this._getPosition(stateObj);
-    const name = this._config.name || stateObj.attributes.friendly_name || entityId;
+    const name =
+      this._config.name ||
+      (this.hass as any).formatEntityName?.(entityId) ||
+      stateObj.attributes.friendly_name ||
+      entityId;
     const slatCount = this._config.slat_count || 8;
     const slatColor = this._config.slat_color || '#FFFFFF';
     const showName = this._config.show_name !== false;
@@ -327,4 +331,9 @@ declare global {
   name: 'Vertical Blinds Card',
   description: 'A card to display vertical blinds',
   preview: true,
+  // Suggest this card when adding a card for a cover entity (HA 2026.6+).
+  getEntitySuggestion: (_hass: any, entityId: string) =>
+    typeof entityId === 'string' && entityId.startsWith('cover.')
+      ? { config: { type: 'custom:vertical-blinds-card', entity: entityId } }
+      : null,
 });
