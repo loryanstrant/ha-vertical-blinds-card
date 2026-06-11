@@ -5,7 +5,7 @@ import { VerticalBlindsCardConfig, ActionConfig, CoverEntityState } from './type
 import './editor';
 
 console.info(
-  `%c VERTICAL-BLINDS-CARD %c 1.1.0 `,
+  `%c VERTICAL-BLINDS-CARD %c 0.2.0 `,
   'color: white; background: #4CAF50; font-weight: 700;',
   'color: #4CAF50; background: white; font-weight: 700;'
 );
