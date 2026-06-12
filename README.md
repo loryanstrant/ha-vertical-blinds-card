@@ -9,6 +9,8 @@ A custom Lovelace card for Home Assistant that displays vertical blinds with a v
 
 - 🎨 Visual representation of vertical blinds
 - 👁️ Preview mode in card selector (shows sample blinds when no entity configured)
+- 💡 Suggested as a card when you add a `cover` entity (entity suggestions)
+- 🏷️ Entity names rendered with Home Assistant's `formatEntityName` helper for consistency
 - 🎯 Entity picker for easy configuration
 - 🔢 Adjustable number of slats (3-20) - configurable in visual editor
 - 🌈 Customizable slat color
@@ -224,6 +226,10 @@ npm run watch
 ```
 
 ## Recent Updates
+
+### v0.2.1 (June 2026)
+- ✅ Card now appears as a suggestion when adding a `cover` entity (`getEntitySuggestion`)
+- ✅ Entity names rendered via `hass.formatEntityName` (falls back to friendly name / entity id)
 
 ### v0.1.0 (February 2026)
 - ✅ Fixed preview placeholder in card selector
