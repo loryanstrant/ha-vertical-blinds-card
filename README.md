@@ -1,9 +1,16 @@
 # Vertical Blinds Card for Home Assistant
 
-A custom Lovelace card for Home Assistant that displays vertical blinds with a visual representation of their open/closed state.
+[![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5?style=flat-square)](https://github.com/hacs/integration)
+[![Release](https://img.shields.io/github/v/release/loryanstrant/ha-vertical-blinds-card?style=flat-square)](https://github.com/loryanstrant/ha-vertical-blinds-card/releases)
+[![Release date](https://img.shields.io/github/release-date/loryanstrant/ha-vertical-blinds-card?style=flat-square)](https://github.com/loryanstrant/ha-vertical-blinds-card/releases)
+[![Downloads](https://img.shields.io/github/downloads/loryanstrant/ha-vertical-blinds-card/total?style=flat-square)](https://github.com/loryanstrant/ha-vertical-blinds-card/releases)
+[![License](https://img.shields.io/github/license/loryanstrant/ha-vertical-blinds-card?style=flat-square)](LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/loryanstrant/ha-vertical-blinds-card?style=flat-square)](https://github.com/loryanstrant/ha-vertical-blinds-card/commits)
+[![Stars](https://img.shields.io/github/stars/loryanstrant/ha-vertical-blinds-card?style=flat-square)](https://github.com/loryanstrant/ha-vertical-blinds-card/stargazers)
 
-![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
+[![Open in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=loryanstrant&repository=ha-vertical-blinds-card&category=plugin)
+
+A custom Lovelace card for Home Assistant that displays vertical blinds with a visual representation of their open/closed state.
 
 ## Features
 
